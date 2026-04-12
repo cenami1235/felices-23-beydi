@@ -89,25 +89,27 @@ function explosionPetalosPro() {
 
 // ===== EFECTO MÁQUINA DE ESCRIBIR =====
 function escribirMensaje(texto, elemento, velocidad = 55) {
-    let i = 0;
-    elemento.textContent = "";
+    return new Promise((resolve) => {
 
-    // 🚫 Quitamos la animación mientras escribe
-    elemento.style.animation = "none";
+        let i = 0;
+        elemento.textContent = "";
+        elemento.style.animation = "none";
 
-    const intervalo = setInterval(() => {
-        elemento.textContent += texto[i];
-        i++;
+        const intervalo = setInterval(() => {
+            elemento.textContent += texto[i];
+            i++;
 
-        if (i >= texto.length) {
-            clearInterval(intervalo);
+            if (i >= texto.length) {
+                clearInterval(intervalo);
 
-            // ✅ Activamos el brillo cuando termina
-            setTimeout(() => {
-                elemento.style.animation = "brillo 2.5s infinite alternate";
-            }, 300);
-        }
-    }, velocidad);
+                setTimeout(() => {
+                    elemento.style.animation = "brillo 2.5s infinite alternate";
+                    resolve(); // 🔥 AVISA QUE TERMINÓ
+                }, 300);
+            }
+        }, velocidad);
+
+    });
 }
 
 
@@ -125,26 +127,18 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const video = document.getElementById("miVideo");
 
-    video.addEventListener("ended", () => {
+    video.addEventListener("ended", async () => {
 
         explosionPetalosPro();
 
         const mensaje = document.getElementById("mensajeFinal");
         mensaje.classList.add("mostrar");
 
-        // 1️⃣ Felices 23
-        const texto1 = "✨Felices 23 ✨\n 7w7 💖";
-        escribirMensaje(texto1, mensaje);
+        const texto1 = "✨Felices 23 ✨\n7w7 💖";
+        const texto2 = "\n\n今は、あの頃にあった大切な時間を静かに想っています。心から感謝しています。あなたを愛しています。";
 
-        // 2️⃣ Mensaje japonés después
-        setTimeout(() => {
-
-            mensaje.innerHTML += "<br><br>";
-
-            const texto2 = "今は、あの頃にあった大切な時間を静かに想っています。心から感謝しています。あなたを愛しています。";
-            escribirMensaje(texto2, mensaje);
-
-        }, 3500);
+        await escribirMensaje(texto1, mensaje);   // ⏳ espera a que termine
+        await escribirMensaje(texto2, mensaje);   // 🧠 empieza EXACTO después
 
     });
 
