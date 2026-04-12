@@ -92,10 +92,21 @@ function escribirMensaje(texto, elemento, velocidad = 55) {
     let i = 0;
     elemento.textContent = "";
 
+    // 🚫 Quitamos la animación mientras escribe
+    elemento.style.animation = "none";
+
     const intervalo = setInterval(() => {
         elemento.textContent += texto[i];
         i++;
-        if (i >= texto.length) clearInterval(intervalo);
+
+        if (i >= texto.length) {
+            clearInterval(intervalo);
+
+            // ✅ Activamos el brillo cuando termina
+            setTimeout(() => {
+                elemento.style.animation = "brillo 2.5s infinite alternate";
+            }, 300);
+        }
     }, velocidad);
 }
 
