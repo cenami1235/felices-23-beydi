@@ -133,7 +133,7 @@ document.addEventListener("DOMContentLoaded", () => {
             const texto2 = "今は、あの頃にあった大切な時間を静かに想っています。心から感謝しています。あなたを愛しています。";
             escribirMensaje(texto2, mensaje);
 
-        }, 9000);
+        }, 5500);
 
     });
 
