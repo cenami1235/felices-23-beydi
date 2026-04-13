@@ -89,27 +89,14 @@ function explosionPetalosPro() {
 
 // ===== EFECTO MÁQUINA DE ESCRIBIR =====
 function escribirMensaje(texto, elemento, velocidad = 55) {
-    return new Promise((resolve) => {
+    let i = 0;
+    elemento.textContent = "";
 
-        let i = 0;
-        elemento.textContent = "";
-        elemento.style.animation = "none";
-
-        const intervalo = setInterval(() => {
-            elemento.textContent += texto[i];
-            i++;
-
-            if (i >= texto.length) {
-                clearInterval(intervalo);
-
-                setTimeout(() => {
-                    elemento.style.animation = "brillo 2.5s infinite alternate";
-                    resolve(); // 🔥 AVISA QUE TERMINÓ
-                }, 300);
-            }
-        }, velocidad);
-
-    });
+    const intervalo = setInterval(() => {
+        elemento.textContent += texto[i];
+        i++;
+        if (i >= texto.length) clearInterval(intervalo);
+    }, velocidad);
 }
 
 
@@ -127,18 +114,26 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const video = document.getElementById("miVideo");
 
-    video.addEventListener("ended", async () => {
+    video.addEventListener("ended", () => {
 
         explosionPetalosPro();
 
         const mensaje = document.getElementById("mensajeFinal");
         mensaje.classList.add("mostrar");
 
-        const texto1 = "✨Felices 23 ✨\n7w7 💖";
-        const texto2 = "\n\n今は、あの頃にあった大切な時間を静かに想っています。心から感謝しています。あなたを愛しています。";
+        // 1️⃣ Felices 23
+        const texto1 = "✨Felices 23 ✨\n 7w7 💖";
+        escribirMensaje(texto1, mensaje);
 
-        await escribirMensaje(texto1, mensaje);   // ⏳ espera a que termine
-        await escribirMensaje(texto2, mensaje);   // 🧠 empieza EXACTO después
+        // 2️⃣ Mensaje japonés después
+        setTimeout(() => {
+
+            mensaje.innerHTML += "<br><br>";
+
+            const texto2 = "今は、あの頃にあった大切な時間を静かに想っています。心から感謝しています。あなたを愛しています。";
+            escribirMensaje(texto2, mensaje);
+
+        }, 9000);
 
     });
 
